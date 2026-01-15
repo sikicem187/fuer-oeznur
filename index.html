@@ -27,19 +27,24 @@
             overflow: hidden; 
         }
 
-        /* --- BLUMEN AM RAND (NEU) --- */
+        /* --- BLUMEN AM RAND (Update v1.3: GRÖSSER) --- */
         .side-flowers {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 25px; /* Abstand zwischen den Blumen */
-            font-size: 24px;
-            z-index: 0; /* Ganz hinten, damit sie nicht den Brief stören */
-            pointer-events: none; /* Klicks gehen durch */
+            gap: 20px; /* Etwas weniger Abstand, da sie größer sind */
+            
+            /* HIER DIE ÄNDERUNG: DEUTLICH GRÖSSER */
+            font-size: 35px; 
+            
+            z-index: 0; 
+            pointer-events: none;
             opacity: 0.8;
             animation: float-flowers 4s ease-in-out infinite;
+            /* Schatten damit sie sich besser abheben */
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
         }
 
         .side-flowers.left { left: 15px; animation-delay: 0s; }
@@ -47,13 +52,14 @@
 
         @keyframes float-flowers {
             0%, 100% { transform: translateY(-50%) translateY(0px); }
-            50% { transform: translateY(-50%) translateY(-10px); }
+            50% { transform: translateY(-50%) translateY(-15px); } /* Stärkere Bewegung */
         }
 
-        /* Media Query für kleine Handys: Blumen kleiner und dichter am Rand */
+        /* Media Query für kleine Handys: Blumen angepasst */
         @media (max-width: 400px) {
             .side-flowers {
-                font-size: 18px;
+                /* Auch hier größer als vorher */
+                font-size: 26px;
                 gap: 15px;
             }
             .side-flowers.left { left: 5px; }
@@ -66,7 +72,7 @@
             position: relative;
             cursor: pointer;
             animation: float 3s ease-in-out infinite;
-            z-index: 2; /* Liegt über den Blumen */
+            z-index: 2; 
         }
         
         .envelope-container.open {
@@ -275,7 +281,7 @@
     
     <div class="hint" id="hint-text">Tippe, um mein Herz zu öffnen</div>
     
-    <div class="version-tag">v1.2</div>
+    <div class="version-tag">v1.3</div>
 
     <script>
         let isOpen = false;
