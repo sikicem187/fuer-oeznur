@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Für Öznur ❤️</title>
+    <style>
+        /* --- Grundeinstellungen & Farben --- */
+        :root {
+            --bg-color: #fce4ec; /* Ein zartes Rosa für den Hintergrund */
+            --envelope-color: #ff8fa3; /* Ein dunkleres Rosa für den Umschlag */
+            --envelope-shadow: #e77a8c;
+            --letter-color: #fff0f5; /* Fast Weiß für das Papier */
+            --text-color: #c2185b; /* Dunkelrot für den Text */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 100dvh hilft auf Handys, damit die Adressleiste nicht nervt */
+            min-height: 100dvh; 
+            background-color: var(--bg-color);
+            font-family: 'Georgia', serif; /* Eine etwas elegantere Schriftart */
+            overflow: hidden; /* Verhindert Scrollen während der Animation */
+        }
+
+        /* --- Der Container für alles --- */
+        .container {
+            position: relative;
+            cursor: pointer;
+            /* Damit es auf kleinen Handys nicht zu riesig wirkt, skalieren wir es etwas runter */
+            transform: scale(0.9);
+        }
+
+        /* --- Der Briefumschlag --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: var(--envelope-shadow);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Trick: Wir nutzen CSS-Ränder (Borders), um Dreiecke zu formen */
+        
+        /* Die vordere Lasche (unten) */
+        .envelope-front {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid var(--envelope-color);
+            z-index: 3; /* Liegt ganz vorne */
+        }
+
+        /* Die linke und rechte Lasche */
+        .envelope-sides {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-left: 150px solid var(--envelope-color);
+            z-index: 3;
+        }
+        .envelope-sides.right {
+            left: auto;
+            right: 0;
+            border-left: none;
+            border-right: 150px solid var(--envelope-color);
+        }
+
+        /* Die obere Lasche (der "Deckel"), die sich öffnen wird */
+        .envelope-lid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--envelope-color);
+            transform-origin: top; /* Drehpunkt oben */
+            transition: transform 0.6s ease-in-out; /* Weiche Animation */
+            z-index: 4; /* Liegt über den anderen Laschen */
+        }
+
+        /* Das kleine Herz-Siegel */
+        .seal {
+            position: absolute;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            z-index: 5;
+            transition: opacity 0.4s ease;
+        }
+
+        /* --- Das Briefpapier --- */
+        .letter {
+            position: absolute;
+            top: 10px; /* Startet leicht versteckt im Umschlag */
+            left: 15px;
+            width: 270px;
+            height: 180px;
+            background-color: var(--letter-color);
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* Wichtig: Das Papier liegt zwischen Rückseite und Vorderlaschen */
+            z-index: 2; 
+            transition: transform 0.8s ease-in-out 0.4s; /* Startet etwas verzögert */
+        }
+        
+        .letter h1 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+        }
+        .letter p {
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        /* --- Die Animationen beim Öffnen --- */
+        
+        /* Wenn die Klasse 'open' hinzugefügt wird (per Klick): */
+        
+        /* 1. Deckel klappt 180 Grad nach oben */
+        .container.open .envelope-lid {
+            transform: rotateX(180deg);
+            border-top-color: var(--envelope-shadow); /* Farbe wird innen etwas dunkler */
+        }
+
+        /* 2. Brief rutscht nach oben raus */
+        .container.open .letter {
+            transform: translateY(-180px); /* Schiebt den Brief nach oben */
+        }
+        
+        /* 3. Siegel verschwindet */
+        .container.open .seal {
+            opacity: 0;
+        }
+        
+        /* Ein kleiner Hinweis-Text unten */
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            color: var(--text-color);
+            font-size: 14px;
+            opacity: 0.7;
+            animation: pulsate 2s infinite;
+        }
+
+        @keyframes pulsate {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.8; transform: scale(1.05); }
+            100% { opacity: 0.4; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container" id="envelope-container" onclick="openLetter()">
+        <div class="envelope-wrapper">
+            <div class="envelope-lid"></div>
+            <div class="envelope-front"></div>
+            <div class="envelope-sides"></div>
+            <div class="envelope-sides right"></div>
+            <div class="seal">❤️</div>
+            
+            <div class="letter">
+                <h1>Meine liebe Öznur,</h1>
+                <p>Ich liebe dich vom ganzen Herzen! ❤️<br><br>Dein Cem</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="hint">Tippe auf den Umschlag zum Öffnen</div>
+
+    <script>
+        // Ein winziges bisschen JavaScript
+        function openLetter() {
+            // Sucht das Element mit der ID 'envelope-container'
+            const container = document.getElementById('envelope-container');
+            // Fügt die Klasse 'open' hinzu (oder entfernt sie wieder)
+            // Das triggert die CSS-Animationen
+            container.classList.toggle('open');
+            
+            // Optional: Hinweis ausblenden nach dem ersten Klick
+            document.querySelector('.hint').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
