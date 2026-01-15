@@ -90,4 +90,198 @@
             border-right: 150px solid transparent;
             border-top: 100px solid var(--envelope-color);
             transform-origin: top;
-            transition:
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.6s ease;
+            z-index: 11; /* Deckel ist ganz oben */
+            border-radius: 5px 5px 0 0;
+        }
+
+        .seal {
+            position: absolute;
+            top: 85px; left: 50%;
+            transform: translateX(-50%);
+            font-size: 32px;
+            z-index: 12;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+        }
+
+        /* --- Das Briefpapier (Angepasst für das GIF) --- */
+        .letter {
+            position: absolute;
+            /* Startposition: Versteckt im Umschlag */
+            top: 5px; 
+            left: 10px;
+            width: 280px; 
+            /* Wir machen den Brief etwas höher, damit alles reinpasst */
+            height: 190px; 
+            background-color: var(--letter-paper);
+            padding: 15px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            /* WICHTIG: Z-Index ist 5. Das ist HÖHER als der Wrapper (1), 
+               aber NIEDRIGER als die Vorderseite (10). So steckt er drin. */
+            z-index: 5; 
+            /* Vereinfachte Transition für mehr Stabilität */
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        /* Das neue Hello Kitty GIF */
+        .kitty-gif {
+            width: 90px; /* Feste Breite damit es nicht zu groß wird */
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .letter h1 {
+            margin: 0 0 5px 0; /* Weniger Abstand */
+            font-size: 20px;   /* Etwas kleinere Schrift */
+            font-weight: normal;
+            color: #d32f2f;
+        }
+        .letter p {
+            font-size: 16px;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        /* --- Animationszustände --- */
+        .envelope-container.open .envelope-lid {
+            transform: rotateX(180deg);
+            border-top-color: var(--envelope-shadow-color);
+        }
+
+        .envelope-container.open .letter {
+            /* Brief fährt weiter raus, weil er jetzt höher ist */
+            transform: translateY(-210px) rotate(-2deg);
+            /* WICHTIG: Wenn offen, springt der z-index auf 20 (ganz nach vorne) */
+            z-index: 20; 
+        }
+        
+        .envelope-container.open .seal {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.5);
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 30px;
+            color: var(--text-color);
+            font-size: 14px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+            animation: pulsate 2s infinite;
+            pointer-events: none; 
+        }
+        @keyframes pulsate {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.4; }
+        }
+
+        /* --- VERSION TAG --- */
+        .version-tag {
+            position: fixed;
+            bottom: 5px; right: 5px;
+            font-family: monospace; font-size: 10px;
+            color: #000; opacity: 0.3; pointer-events: none;
+        }
+
+        /* --- KONFETTI CSS --- */
+        .confetti {
+            position: absolute; width: 10px; height: 10px;
+            top: -10px; z-index: 99; pointer-events: none;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(720deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="envelope-container" id="envelope" onclick="openLetter()">
+        <div class="envelope-wrapper">
+            <div class="envelope-lid"></div>
+            <div class="envelope-front"></div>
+            <div class="envelope-sides"></div>
+            <div class="envelope-sides right"></div>
+            <div class="seal">❤️</div>
+            
+            <div class="letter">
+                <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDRkZm8ybm9iNTF1Yjl3Yzl2bHE4ajVwdzZ0NXdxZWg2eHVyNGVlcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kZqbBT64ECtjy/giphy.gif" alt="Hello Kitty Love" class="kitty-gif">
+                
+                <h1>Meine liebe Öznur,</h1>
+                <p>Ich liebe dich vom ganzen Herzen! ❤️<br>Dein Cem</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="hint" id="hint-text">Tippe, um mein Herz zu öffnen</div>
+    
+    <div class="version-tag">v1.1</div>
+
+    <script>
+        let isOpen = false;
+
+        function openLetter() {
+            if (isOpen) return; 
+            isOpen = true;
+
+            const container = document.getElementById('envelope');
+            const hint = document.getElementById('hint-text');
+            
+            container.classList.add('open');
+            hint.style.display = 'none';
+
+            launchConfetti();
+        }
+
+        function launchConfetti() {
+            // Hab noch ein paar Hello Kitty Farben hinzugefügt ;)
+            const colors = ['#ffcdd2', '#f8bbd0', '#e1bee7', '#ff8fa3', '#ffeb3b', '❤️', '🎀'];
+            const confettiCount = 60; 
+
+            for (let i = 0; i < confettiCount; i++) {
+                createParticle(colors);
+            }
+        }
+
+        function createParticle(colors) {
+            const particle = document.createElement('div');
+            const randomChoice = colors[Math.floor(Math.random() * colors.length)];
+            
+            if (randomChoice === '❤️' || randomChoice === '🎀') {
+                particle.innerText = randomChoice;
+                particle.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            } else {
+                particle.style.backgroundColor = randomChoice;
+                particle.style.width = (Math.random() * 10 + 5) + 'px';
+                particle.style.height = (Math.random() * 10 + 5) + 'px';
+                particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            }
+
+            particle.classList.add('confetti');
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 6000);
+        }
+    </script>
+
+</body>
+</html>
