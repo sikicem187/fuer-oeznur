@@ -49,4 +49,45 @@
             height: 200px;
             background-color: var(--envelope-shadow-color);
             box-shadow: 0 15px 35px rgba(194, 24, 91, 0.2);
-            border-radius
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        /* --- Die Dreiecke des Umschlags --- */
+        .envelope-front {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid var(--envelope-color);
+            z-index: 10; /* Muss hoch sein, um den Brief unten zu verdecken */
+            border-radius: 0 0 5px 5px;
+        }
+
+        .envelope-sides {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-left: 150px solid var(--envelope-color);
+            z-index: 10;
+            border-radius: 5px 0 0 5px;
+        }
+        .envelope-sides.right {
+            left: auto; right: 0;
+            border-left: none;
+            border-right: 150px solid var(--envelope-color);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .envelope-lid {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--envelope-color);
+            transform-origin: top;
+            transition:
