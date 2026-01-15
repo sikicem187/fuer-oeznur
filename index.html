@@ -7,8 +7,8 @@
     <style>
         /* --- Variablen & Setup --- */
         :root {
-            --bg-gradient-start: #fff0f5; /* Helles Rosa innen */
-            --bg-gradient-end: #f8c3d3;   /* Dunkleres Rosa außen */
+            --bg-gradient-start: #fff0f5; 
+            --bg-gradient-end: #f8c3d3;   
             --envelope-color: #ff8fa3;
             --envelope-shadow-color: #e77a8c;
             --letter-paper: #fffbfb;
@@ -21,22 +21,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100dvh; /* 100dvh ist besser für mobile Browser */
-            /* Spektakulärer Hintergrund: Radialer Verlauf */
+            min-height: 100dvh; 
             background: radial-gradient(circle at center, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             font-family: 'Georgia', 'Times New Roman', serif;
-            overflow: hidden; /* Wichtig für das Konfetti */
+            overflow: hidden; 
         }
 
         /* --- Der Briefumschlag-Container --- */
         .envelope-container {
             position: relative;
             cursor: pointer;
-            /* Leichte Schwebebewegung im geschlossenen Zustand */
             animation: float 3s ease-in-out infinite;
         }
         
-        /* Stoppt das Schweben, wenn geöffnet */
         .envelope-container.open {
             animation: none;
         }
@@ -51,240 +48,5 @@
             width: 300px;
             height: 200px;
             background-color: var(--envelope-shadow-color);
-            box-shadow: 0 15px 35px rgba(194, 24, 91, 0.2); /* Weicherer, farbiger Schatten */
-            border-radius: 5px;
-        }
-
-        /* --- Die Dreiecke des Umschlags --- */
-        .envelope-front {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 100px solid var(--envelope-color);
-            z-index: 3;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .envelope-sides {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-top: 100px solid transparent;
-            border-bottom: 100px solid transparent;
-            border-left: 150px solid var(--envelope-color);
-            z-index: 3;
-            border-radius: 5px 0 0 5px;
-        }
-        .envelope-sides.right {
-            left: auto; right: 0;
-            border-left: none;
-            border-right: 150px solid var(--envelope-color);
-            border-radius: 0 5px 5px 0;
-        }
-
-        /* Der Deckel (Das wichtigste Teil) */
-        .envelope-lid {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid var(--envelope-color);
-            transform-origin: top;
-            /* Dynamische Transition für das Öffnen und Schließen */
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.6s ease;
-            z-index: 4; /* Startet ÜBER dem Brief */
-            border-radius: 5px 5px 0 0;
-        }
-
-        .seal {
-            position: absolute;
-            top: 85px; left: 50%;
-            transform: translateX(-50%);
-            font-size: 32px;
-            z-index: 5;
-            transition: all 0.4s ease;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
-        }
-
-        /* --- Das Briefpapier --- */
-        .letter {
-            position: absolute;
-            /* Startposition leicht versteckt */
-            top: 15px; left: 15px;
-            width: 270px; height: 170px;
-            background-color: var(--letter-paper);
-            padding: 25px 20px;
-            box-sizing: border-box;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: var(--text-color);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            border-radius: 4px;
-            z-index: 2; /* Startet HINTER den Umschlagteilen */
-            
-            /* DER FIX: 
-               Wir animieren transform (Bewegung) über 0.8s.
-               Wir animieren z-index, ABER mit 0.4s Verzögerung (delay).
-               Dadurch rutscht er erst raus und springt dann in den Vordergrund. */
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0.1s linear 0.4s;
-        }
-        
-        .letter h1 {
-            margin: 0 0 15px 0;
-            font-size: 24px;
-            font-weight: normal;
-            color: #d32f2f;
-        }
-        .letter p {
-            font-size: 17px;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        /* --- Animationszustände (Wenn 'open' Klasse aktiv ist) --- */
-        
-        /* 1. Deckel aufklappen und Farbe innen abdunkeln */
-        .envelope-container.open .envelope-lid {
-            transform: rotateX(180deg);
-            border-top-color: var(--envelope-shadow-color);
-        }
-
-        /* 2. Brief rausziehen und leicht drehen für Dynamik */
-        .envelope-container.open .letter {
-            transform: translateY(-200px) rotate(-2deg);
-            /* WICHTIG: Wenn offen, liegt der Brief ganz vorne! */
-            z-index: 10; 
-        }
-        
-        /* 3. Siegel verschwindet */
-        .envelope-container.open .seal {
-            opacity: 0;
-            transform: translateX(-50%) scale(0.5);
-        }
-
-        /* Hinweis-Text */
-        .hint {
-            position: absolute;
-            bottom: 30px;
-            color: var(--text-color);
-            font-size: 14px;
-            opacity: 0.6;
-            letter-spacing: 1px;
-            animation: pulsate 2s infinite;
-            pointer-events: none; /* Damit man nicht versehentlich draufklickt */
-        }
-        @keyframes pulsate {
-            0% { opacity: 0.4; }
-            50% { opacity: 0.8; }
-            100% { opacity: 0.4; }
-        }
-
-        /* --- KONFETTI CSS --- */
-        .confetti {
-            position: absolute;
-            width: 10px; height: 10px;
-            top: -10px;
-            z-index: 99; /* Ganz vorne */
-            pointer-events: none;
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            to {
-                transform: translateY(105vh) rotate(720deg);
-            }
-        }
-
-    </style>
-</head>
-<body>
-
-    <div class="envelope-container" id="envelope" onclick="openLetter()">
-        <div class="envelope-wrapper">
-            <div class="envelope-lid"></div>
-            <div class="envelope-front"></div>
-            <div class="envelope-sides"></div>
-            <div class="envelope-sides right"></div>
-            <div class="seal">❤️</div>
-            
-            <div class="letter">
-                <h1>Meine liebe Öznur,</h1>
-                <p>Ich liebe dich vom ganzen Herzen! ❤️<br><br>Dein Cem</p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="hint" id="hint-text">Tippe, um mein Herz zu öffnen</div>
-
-    <script>
-        let isOpen = false;
-
-        function openLetter() {
-            if (isOpen) return; // Verhindert mehrfaches Klicken
-            isOpen = true;
-
-            const container = document.getElementById('envelope');
-            const hint = document.getElementById('hint-text');
-            
-            // Klasse hinzufügen für CSS-Animationen
-            container.classList.add('open');
-            
-            // Hinweis ausblenden
-            hint.style.display = 'none';
-
-            // Spektakulär: Konfetti starten!
-            launchConfetti();
-        }
-
-        // --- Die Konfetti-Kanone (JavaScript) ---
-        function launchConfetti() {
-            const colors = ['#ffcdd2', '#f8bbd0', '#e1bee7', '#ff8fa3', '❤️'];
-            const confettiCount = 60; // Anzahl der Schnipsel
-
-            for (let i = 0; i < confettiCount; i++) {
-                createParticle(colors);
-            }
-        }
-
-        function createParticle(colors) {
-            const particle = document.createElement('div');
-            
-            // Zufällige Auswahl: Farbe oder Herz-Emoji
-            const randomChoice = colors[Math.floor(Math.random() * colors.length)];
-            
-            if (randomChoice === '❤️') {
-                particle.innerText = '❤️';
-                particle.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            } else {
-                particle.style.backgroundColor = randomChoice;
-                // Zufällige Formen (Quadrate oder Rechtecke)
-                particle.style.width = (Math.random() * 10 + 5) + 'px';
-                particle.style.height = (Math.random() * 10 + 5) + 'px';
-                particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            }
-
-            particle.classList.add('confetti');
-            
-            // Zufällige Startposition auf der X-Achse
-            particle.style.left = Math.random() * 100 + 'vw';
-            // Zufällige Verzögerung für natürlicheren Fall
-            particle.style.animationDelay = Math.random() * 2 + 's';
-            // Zufällige Fallgeschwindigkeit
-            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            
-            document.body.appendChild(particle);
-
-            // Aufräumen: Partikel nach der Animation entfernen, damit der Browser nicht langsam wird
-            setTimeout(() => {
-                particle.remove();
-            }, 6000);
-        }
-    </script>
-
-</body>
-</html>
+            box-shadow: 0 15px 35px rgba(194, 24, 91, 0.2);
+            border-radius
