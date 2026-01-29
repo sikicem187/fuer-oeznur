@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Für Öznur ❤️</title>
+    <title>Entschuldigung an Öznur</title>
     <style>
-        /* --- Variablen & Setup --- */
+        /* --- Neue Variablen für den ernsteren Look --- */
         :root {
-            --bg-gradient-start: #fff0f5; 
-            --bg-gradient-end: #f8c3d3;   
-            --envelope-color: #ff8fa3;
-            --envelope-shadow-color: #e77a8c;
-            --letter-paper: #fffbfb;
-            --text-color: #c2185b;
+            --bg-gradient-start: #2c3e50; /* Dunkles Blau-Grau */
+            --bg-gradient-end: #4ca1af;   /* Ein etwas helleres, hoffnungsvolles Blau */
+            --box-color: #34495e;         /* Dunkle Schatulle */
+            --box-shadow-color: #2c3e50;
+            --paper-color: #fdfcf8;       /* Helles, edles Papier */
+            --text-color: #2c3e50;        /* Dunkler Text */
+            --accent-color: #c0392b;      /* Ein ernstes Rot für Akzente */
         }
 
         body {
@@ -21,320 +22,209 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100dvh; 
-            background: radial-gradient(circle at center, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-            font-family: 'Georgia', 'Times New Roman', serif;
-            overflow: hidden; 
+            min-height: 100dvh;
+            /* Ein ruhigerer, tieferer Hintergrundverlauf */
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modernere, klarere Schrift */
+            overflow: hidden;
         }
 
-        /* --- BLUMEN AM RAND (Groß) --- */
-        .side-flowers {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 20px; 
-            font-size: 35px; 
-            z-index: 0; 
-            pointer-events: none;
-            opacity: 0.8;
-            animation: float-flowers 4s ease-in-out infinite;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
-        }
-
-        .side-flowers.left { left: 15px; animation-delay: 0s; }
-        .side-flowers.right { right: 15px; animation-delay: 2s; }
-
-        @keyframes float-flowers {
-            0%, 100% { transform: translateY(-50%) translateY(0px); }
-            50% { transform: translateY(-50%) translateY(-15px); }
-        }
-
-        @media (max-width: 400px) {
-            .side-flowers {
-                font-size: 26px;
-                gap: 15px;
-            }
-            .side-flowers.left { left: 5px; }
-            .side-flowers.right { right: 5px; }
-        }
-
-
-        /* --- Der Briefumschlag-Container --- */
-        .envelope-container {
+        /* --- Die Schatulle (Container) --- */
+        .box-container {
             position: relative;
             cursor: pointer;
-            animation: float 3s ease-in-out infinite;
-            z-index: 2; 
-        }
-        
-        .envelope-container.open {
-            animation: none;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) scale(0.9); }
-            50% { transform: translateY(-10px) scale(0.9); }
-        }
-
-        .envelope-wrapper {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background-color: var(--envelope-shadow-color);
-            box-shadow: 0 15px 35px rgba(194, 24, 91, 0.2);
-            border-radius: 5px;
-            z-index: 1;
-        }
-
-        /* --- Die Dreiecke des Umschlags --- */
-        .envelope-front {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 100px solid var(--envelope-color);
-            z-index: 10; 
-            border-radius: 0 0 5px 5px;
-        }
-
-        .envelope-sides {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-top: 100px solid transparent;
-            border-bottom: 100px solid transparent;
-            border-left: 150px solid var(--envelope-color);
+            /* Kein hektisches Wackeln mehr, nur ein ganz langsames Atmen */
+            animation: breathe 5s ease-in-out infinite;
             z-index: 10;
-            border-radius: 5px 0 0 5px;
         }
-        .envelope-sides.right {
-            left: auto; right: 0;
-            border-left: none;
-            border-right: 150px solid var(--envelope-color);
-            border-radius: 0 5px 5px 0;
+        .box-container.open { animation: none; }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
 
-        .envelope-lid {
+        /* Der Körper der Box */
+        .box-body {
+            position: relative;
+            width: 320px;
+            height: 180px;
+            background-color: var(--box-color);
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 5;
+            /* Ein kleines Schloss-Detail vorne */
+            display: flex; justify-content: center; align-items: center;
+        }
+        .box-body::after {
+            content: '';
+            width: 30px; height: 30px;
+            background-color: #bdc3c7; /* Silbernes Schloss */
+            border-radius: 50%;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Der Deckel der Box */
+        .box-lid {
             position: absolute;
             top: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 100px solid var(--envelope-color);
-            transform-origin: top;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.6s ease;
-            z-index: 11; 
-            border-radius: 5px 5px 0 0;
+            width: 320px; height: 180px;
+            background-color: var(--box-color);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform-origin: top; /* Dreht sich oben auf */
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20; /* Liegt ganz oben */
+            border-bottom: 2px solid #bdc3c7; /* Silberne Kante */
         }
 
-        .seal {
+        /* --- Die Nachricht (Das Papier) --- */
+        .message-card {
             position: absolute;
-            top: 85px; left: 50%;
-            transform: translateX(-50%);
-            font-size: 32px;
-            z-index: 12;
-            transition: all 0.4s ease;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
-        }
-
-        /* --- Das Briefpapier --- */
-        .letter {
-            position: absolute;
-            top: 5px; 
-            left: 10px;
-            width: 280px; 
-            height: 190px; 
-            background-color: var(--letter-paper);
-            padding: 15px;
+            top: 10px; left: 20px;
+            width: 280px; height: auto;
+            min-height: 220px;
+            background-color: var(--paper-color);
+            padding: 25px;
             box-sizing: border-box;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            color: var(--text-color);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border-radius: 4px;
-            z-index: 5; 
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        .kitty-gif {
-            width: 90px;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            /* Startet versteckt IN der Box (zwischen Body und Lid) */
+            z-index: 15;
+            transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s; /* Startet leicht verzögert */
+            border: 1px solid #eee;
         }
 
-        .letter h1 {
-            margin: 0 0 5px 0; 
-            font-size: 20px;
-            font-weight: normal;
-            color: #d32f2f;
+        /* Das Entschuldigungs-GIF */
+        .sorry-gif {
+            width: 100px; height: auto;
+            margin-bottom: 15px;
+            border-radius: 8px;
         }
-        .letter p {
+
+        .message-card h1 {
+            margin: 0 0 15px 0;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent-color); /* Rote Überschrift für Ernsthaftigkeit */
+        }
+        .message-card p {
             font-size: 16px;
-            line-height: 1.4;
-            margin: 0;
+            line-height: 1.5;
+            margin: 0 0 15px 0;
+            color: var(--text-color);
+        }
+        .signature {
+            font-weight: bold;
+            margin-top: 10px;
         }
 
-        /* --- Animationszustände --- */
-        .envelope-container.open .envelope-lid {
-            transform: rotateX(180deg);
-            border-top-color: var(--envelope-shadow-color);
+        /* --- Animationen beim Öffnen --- */
+        .box-container.open .box-lid {
+            /* Klappt weit nach oben auf */
+            transform: rotateX(-110deg);
         }
 
-        .envelope-container.open .letter {
-            transform: translateY(-210px) rotate(-2deg);
-            z-index: 20; 
-        }
-        
-        .envelope-container.open .seal {
-            opacity: 0;
-            transform: translateX(-50%) scale(0.5);
+        .box-container.open .message-card {
+            /* Fährt weit nach oben aus der Box */
+            transform: translateY(-260px);
+            /* Wichtig: Z-Index erhöhen, damit es über dem geöffneten Deckel liegt */
+            z-index: 30;
         }
 
-        /* --- HIER DER TEXT ÜBER DEM BRIEF --- */
+        /* --- Der Hinweis-Text --- */
         .hint {
             position: absolute;
-            /* Wir setzen ihn mittig über den Umschlag */
-            top: calc(50% - 170px); 
-            left: 50%;
-            transform: translateX(-50%);
-            
-            color: var(--text-color);
-            font-size: 16px; /* Etwas größer und lesbarer */
-            font-weight: bold;
-            opacity: 0.8;
+            top: calc(50% - 180px); /* Position über der Box */
+            width: 100%; text-align: center;
+            color: #ecf0f1; /* Heller Text auf dunklem Grund */
+            font-size: 16px; font-weight: 500;
             letter-spacing: 1px;
-            animation: pulsate 2s infinite;
-            pointer-events: none; 
-            z-index: 20;
-            width: 100%;
-            text-align: center;
+            animation: pulsate 3s infinite;
+            pointer-events: none; z-index: 50;
         }
         @keyframes pulsate {
-            0% { opacity: 0.5; transform: translateX(-50%) scale(1); }
-            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
-            100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
-        /* --- VERSION TAG --- */
-        .version-tag {
-            position: fixed;
-            bottom: 5px; right: 5px;
-            font-family: monospace; font-size: 10px;
-            color: #000; opacity: 0.3; pointer-events: none;
-            z-index: 100;
+        /* --- Ruhige Hintergrund-Partikel (statt Konfetti) --- */
+        .particle {
+            position: absolute;
+            bottom: -20px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            animation: rise linear infinite;
         }
-
-        /* --- KONFETTI CSS --- */
-        .confetti {
-            position: absolute; width: 10px; height: 10px;
-            top: -10px; z-index: 99; pointer-events: none;
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            to { transform: translateY(105vh) rotate(720deg); }
+        @keyframes rise {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            20% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-100vh) scale(1.5); }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="side-flowers left">
-        <div>🌸</div>
-        <div>🌹</div>
-        <div>🌺</div>
-        <div>🌷</div>
-        <div>🌻</div>
-        <div>💐</div>
-    </div>
+    <div class="box-container" id="box" onclick="openBox()">
+        <div class="box-lid"></div>
+        <div class="box-body"></div>
 
-    <div class="side-flowers right">
-        <div>💐</div>
-        <div>🌻</div>
-        <div>🌷</div>
-        <div>🌺</div>
-        <div>🌹</div>
-        <div>🌸</div>
-    </div>
+        <div class="message-card">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJ4anh5ODFqeXF1M3F4Z254aWZ5bG03d3Z5OWc5eXF3aWZ5bG03eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/OpfkuToK5gSHK/giphy.gif" alt="Sorry Bear" class="sorry-gif">
 
-    <div class="envelope-container" id="envelope" onclick="openLetter()">
-        <div class="envelope-wrapper">
-            <div class="envelope-lid"></div>
-            <div class="envelope-front"></div>
-            <div class="envelope-sides"></div>
-            <div class="envelope-sides right"></div>
-            <div class="seal">❤️</div>
-            
-            <div class="letter">
-                <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDRkZm8ybm9iNTF1Yjl3Yzl2bHE4ajVwdzZ0NXdxZWg2eHVyNGVlcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kZqbBT64ECtjy/giphy.gif" alt="Hello Kitty Love" class="kitty-gif">
-                
-                <h1>Meine liebe Öznur,</h1>
-                <p>Ich liebe dich vom ganzen Herzen! ❤️<br>Dein Cem</p>
-            </div>
+            <h1>Öznur, es tut mir leid.</h1>
+            <p>Ich habe Mist gebaut und das weiß ich. Es war nicht okay von mir.<br><br>Ich hoffe, du kannst mir verzeihen.</p>
+            <p class="signature">Dein Cem</p>
         </div>
     </div>
-    
-    <div class="hint" id="hint-text">Drücke den Brief</div>
-    
-    <div class="version-tag">v1.4</div>
+
+    <div class="hint" id="hint-text">Bitte öffne diese Nachricht</div>
 
     <script>
         let isOpen = false;
 
-        function openLetter() {
-            if (isOpen) return; 
+        function openBox() {
+            if (isOpen) return;
             isOpen = true;
 
-            const container = document.getElementById('envelope');
-            const hint = document.getElementById('hint-text');
-            
-            container.classList.add('open');
-            // Text verschwindet beim Klick
-            hint.style.display = 'none';
+            document.getElementById('box').classList.add('open');
+            document.getElementById('hint-text').style.display = 'none';
 
-            launchConfetti();
+            // Starte die ruhigen Hintergrund-Partikel
+            startParticles();
         }
 
-        function launchConfetti() {
-            const colors = ['#ffcdd2', '#f8bbd0', '#e1bee7', '#ff8fa3', '#ffeb3b', '❤️', '🎀', '🌸'];
-            const confettiCount = 60; 
-
-            for (let i = 0; i < confettiCount; i++) {
-                createParticle(colors);
+        function startParticles() {
+            const particleCount = 30;
+            for (let i = 0; i < particleCount; i++) {
+                createParticle();
             }
         }
 
-        function createParticle(colors) {
+        function createParticle() {
             const particle = document.createElement('div');
-            const randomChoice = colors[Math.floor(Math.random() * colors.length)];
-            
-            if (['❤️', '🎀', '🌸'].includes(randomChoice)) {
-                particle.innerText = randomChoice;
-                particle.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            } else {
-                particle.style.backgroundColor = randomChoice;
-                particle.style.width = (Math.random() * 10 + 5) + 'px';
-                particle.style.height = (Math.random() * 10 + 5) + 'px';
-                particle.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            }
+            particle.classList.add('particle');
 
-            particle.classList.add('confetti');
+            // Zufällige Größe und Position
+            const size = Math.random() * 30 + 10 + 'px';
+            particle.style.width = size;
+            particle.style.height = size;
             particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.animationDelay = Math.random() * 2 + 's';
-            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            
-            document.body.appendChild(particle);
 
-            setTimeout(() => {
-                particle.remove();
-            }, 6000);
+            // Zufällige Geschwindigkeit (sehr langsam)
+            const duration = Math.random() * 10 + 10 + 's'; // Zwischen 10 und 20 Sekunden
+            particle.style.animationDuration = duration;
+            // Zufällige Verzögerung
+            particle.style.animationDelay = Math.random() * 5 + 's';
+
+            document.body.appendChild(particle);
         }
     </script>
 
